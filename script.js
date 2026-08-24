@@ -160,7 +160,20 @@ function newRound() {
 
   state.game = pick;
   state.lastGame = pick;
-  state.imposter = 1 + Math.floor(Math.random() * PLAYER_COUNT);
+
+  // Pick a fresh random imposter for every round and avoid repeating
+  // the previous position when there is more than one player.
+  let nextImposter;
+  do {
+    nextImposter = 1 + Math.floor(Math.random() * PLAYER_COUNT);
+  } while (
+    PLAYER_COUNT > 1 &&
+    state.lastImposter != null &&
+    nextImposter === state.lastImposter
+  );
+
+  state.imposter = nextImposter;
+  state.lastImposter = nextImposter;
   state.current = 1;
   state.revealed = false;
 
