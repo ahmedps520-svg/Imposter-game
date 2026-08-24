@@ -22,6 +22,7 @@ const $ = (id) => document.getElementById(id);
 
 const el = {
   nameForm:     $("name-form"),
+  namesStart:   $("btn-names-start"),
   nameInputs:   [$("name-1"), $("name-2"), $("name-3"), $("name-4")],
   nameError:    $("name-error"),
   passNumber:   $("pass-number"),
@@ -98,15 +99,13 @@ const sound = {
 /* ── Screens ───────────────────────────────────────────── */
 
 function goTo(name) {
-  const current = document.querySelector(".screen.is-active");
   const next = $("screen-" + name);
-  if (!next || current === next) return;
+  if (!next) return;
 
-  if (current) {
-    current.classList.remove("is-active");
-    current.classList.add("is-leaving");
-    setTimeout(() => current.classList.remove("is-leaving"), 300);
-  }
+  document.querySelectorAll(".screen").forEach((screen) => {
+    screen.classList.remove("is-active", "is-leaving");
+  });
+
   next.classList.add("is-active");
 }
 
@@ -137,22 +136,18 @@ function showNameEntry() {
   goTo("names");
 }
 
-function startNamedRound(event) {
-  if (event) event.preventDefault();
-
+function startNamedRound() {
   const names = el.nameInputs.map((input) => input.value.trim());
 
   if (names.some((name) => !name)) {
     el.nameError.textContent = "Please enter all 4 player names.";
-    return false;
+    return;
   }
 
   state.players = names;
+  state.busy = false;
   el.nameError.textContent = "";
-  sound.unlock();
-  sound.tap();
   newRound();
-  return false;
 }
 
 /* ── Game flow ─────────────────────────────────────────── */
@@ -288,8 +283,6 @@ function tapped(handler) {
   };
 }
 
-$("btn-start").addEventListener("click", tapped(showNameEntry));
-el.nameForm.addEventListener("submit", startNamedRound);
 $("btn-imready").addEventListener("click", tapped(() => { sound.tap(); showCard(); }));
 $("btn-next").addEventListener("click", tapped(() => { sound.tap(); nextPlayer(); }));
 $("btn-finish").addEventListener("click", tapped(() => showResult()));

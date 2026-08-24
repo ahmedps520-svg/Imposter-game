@@ -46,7 +46,7 @@
           </ul>
         </div>
 
-        <button class="btn btn-primary pop" style="--d:240ms" id="btn-start" type="button">
+        <button class="btn btn-primary pop" style="--d:240ms" id="btn-start" type="button" onclick="showNameEntry()">
           <span class="btn-label">Start Game</span>
           <span class="btn-glow" aria-hidden="true"></span>
         </button>
@@ -62,7 +62,7 @@
         <h2 class="heading pop" style="--d:60ms">Who's Playing?</h2>
         <p class="hint pop" style="--d:100ms">Enter the names of all 4 players before starting.</p>
 
-        <form class="glass card names-card pop" id="name-form" style="--d:160ms">
+        <div class="glass card names-card pop" id="name-form" style="--d:160ms">
           <div class="name-fields">
             <label class="name-field">
               <span>Player 1</span>
@@ -84,11 +84,11 @@
 
           <p class="form-error" id="name-error" aria-live="polite"></p>
 
-          <button class="btn btn-primary" type="submit">
+          <button class="btn btn-primary" id="btn-names-start" type="button" onclick="startNamedRound()">
             <span class="btn-label">Start Game</span>
             <span class="btn-glow" aria-hidden="true"></span>
           </button>
-        </form>
+        </div>
       </div>
     </section>
 
