@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+<meta name="theme-color" content="#0a0a1f" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="description" content="A pass-and-play party game for 4 players. Three players get the same famous video game. One is the imposter." />
+<title>Imposter — Video Game Edition</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- Animated background -->
+  <div class="backdrop" aria-hidden="true">
+    <span class="blob blob-1"></span>
+    <span class="blob blob-2"></span>
+    <span class="blob blob-3"></span>
+    <span class="blob blob-4"></span>
+    <span class="grain"></span>
+  </div>
+
+  <div class="confetti-layer" id="confetti" aria-hidden="true"></div>
+
+  <main class="stage">
+
+    <!-- ───────────────────────── HOME ───────────────────────── -->
+    <section class="screen is-active" id="screen-home" data-screen="home">
+      <div class="stack">
+        <div class="logo pop" style="--d:0ms">
+          <span class="logo-mark">?</span>
+        </div>
+
+        <h1 class="title pop" style="--d:80ms">
+          <span class="title-word">IMPOSTER</span>
+          <span class="title-sub">Video Game Edition</span>
+        </h1>
+
+        <div class="glass card rules pop" style="--d:160ms">
+          <ul class="rule-list">
+            <li><span class="rule-num">1</span><span>Pass the iPad around. Each of the <b>4 players</b> taps to see their secret card.</span></li>
+            <li><span class="rule-num">2</span><span>Three of you get the <b>same famous video game</b>. One of you is the <b>imposter</b>.</span></li>
+            <li><span class="rule-num">3</span><span>Take turns describing the game with <b>one word</b> — without giving it away.</span></li>
+            <li><span class="rule-num">4</span><span>Talk it out, then <b>vote</b>. Did you catch the imposter?</span></li>
+          </ul>
+        </div>
+
+        <button class="btn btn-primary pop" style="--d:240ms" id="btn-start" type="button">
+          <span class="btn-label">Start Game</span>
+          <span class="btn-glow" aria-hidden="true"></span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ───────────────────────── PASS ───────────────────────── -->
+    <section class="screen" id="screen-pass" data-screen="pass">
+      <div class="stack">
+        <p class="eyebrow pop" style="--d:0ms">Pass the iPad to</p>
+
+        <div class="passer pop" style="--d:60ms">
+          <span class="ring ring-1" aria-hidden="true"></span>
+          <span class="ring ring-2" aria-hidden="true"></span>
+          <div class="glass passer-badge">
+            <span class="passer-label">Player</span>
+            <span class="passer-num" id="pass-number">1</span>
+          </div>
+        </div>
+
+        <p class="hint pop" style="--d:140ms">No peeking, everyone else — look away!</p>
+
+        <div class="dots pop" id="dots-pass" style="--d:180ms" aria-hidden="true"></div>
+
+        <button class="btn btn-primary pop" style="--d:220ms" id="btn-imready" type="button">
+          <span class="btn-label">I'm Player <span id="ready-number">1</span></span>
+          <span class="btn-glow" aria-hidden="true"></span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ───────────────────────── CARD ───────────────────────── -->
+    <section class="screen" id="screen-card" data-screen="card">
+      <div class="stack">
+        <p class="eyebrow pop" style="--d:0ms">Player <span id="card-number">1</span>'s card</p>
+
+        <div class="flip-wrap pop" style="--d:60ms">
+          <button class="flip" id="flip-card" type="button" aria-label="Tap to reveal your card">
+            <div class="flip-inner" id="flip-inner">
+
+              <div class="flip-face flip-front glass">
+                <span class="face-icon">👀</span>
+                <span class="face-title">Tap to reveal</span>
+                <span class="face-note">Make sure nobody is watching</span>
+                <span class="sheen" aria-hidden="true"></span>
+              </div>
+
+              <div class="flip-face flip-back glass" id="flip-back">
+                <div class="reveal-inner">
+                  <span class="face-kicker" id="card-kicker">Your secret game</span>
+                  <span class="face-word" id="card-word">—</span>
+                  <span class="face-note" id="card-note">Describe it in one word</span>
+                </div>
+                <span class="sheen" aria-hidden="true"></span>
+              </div>
+
+            </div>
+          </button>
+        </div>
+
+        <div class="dots" id="dots-card" aria-hidden="true"></div>
+
+        <button class="btn btn-primary is-hidden" id="btn-next" type="button">
+          <span class="btn-label" id="btn-next-label">Hide &amp; Pass On</span>
+          <span class="btn-glow" aria-hidden="true"></span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ──────────────────────── DISCUSS ─────────────────────── -->
+    <section class="screen" id="screen-discuss" data-screen="discuss">
+      <div class="stack">
+        <div class="logo logo-sm pop" style="--d:0ms"><span class="logo-mark">🎮</span></div>
+
+        <h2 class="heading pop" style="--d:60ms">Everyone's in!</h2>
+        <p class="hint pop" style="--d:100ms">Put the iPad down where you can all see it.</p>
+
+        <div class="glass card rules pop" style="--d:160ms">
+          <ul class="rule-list">
+            <li><span class="rule-num">1</span><span>Going clockwise, everyone says <b>one word</b> about the game.</span></li>
+            <li><span class="rule-num">2</span><span>Too obvious and the imposter learns it. Too vague and you look guilty.</span></li>
+            <li><span class="rule-num">3</span><span>Discuss, then <b>point at the imposter</b> on the count of three.</span></li>
+          </ul>
+        </div>
+
+        <button class="btn btn-primary pop" style="--d:240ms" id="btn-finish" type="button">
+          <span class="btn-label">Finished Game — Reveal</span>
+          <span class="btn-glow" aria-hidden="true"></span>
+        </button>
+
+        <button class="btn btn-ghost pop" style="--d:280ms" id="btn-skip" type="button">Start a new round instead</button>
+      </div>
+    </section>
+
+    <!-- ───────────────────────── RESULT ─────────────────────── -->
+    <section class="screen" id="screen-result" data-screen="result">
+      <div class="stack">
+        <p class="eyebrow pop" style="--d:0ms">The imposter was</p>
+
+        <div class="glass card result-card pop" style="--d:80ms">
+          <span class="result-num" id="result-imposter">1</span>
+          <span class="result-label">Player</span>
+        </div>
+
+        <div class="glass card secret-card pop" style="--d:180ms">
+          <span class="secret-kicker">The secret game was</span>
+          <span class="secret-word" id="result-game">—</span>
+        </div>
+
+        <button class="btn btn-primary pop" style="--d:280ms" id="btn-again" type="button">
+          <span class="btn-label">New Game</span>
+          <span class="btn-glow" aria-hidden="true"></span>
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <button class="sound-toggle glass" id="btn-sound" type="button" aria-label="Toggle sound">
+    <span id="sound-icon">🔊</span>
+  </button>
+
+  <noscript>
+    <p style="color:#fff;text-align:center;padding:2rem">This game needs JavaScript enabled.</p>
+  </noscript>
+
+  <script src="script.js"></script>
+</body>
+</html>
