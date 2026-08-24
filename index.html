@@ -53,6 +53,45 @@
       </div>
     </section>
 
+
+    <!-- ───────────────────────── NAMES ───────────────────────── -->
+    <section class="screen" id="screen-names" data-screen="names">
+      <div class="stack">
+        <div class="logo logo-sm pop" style="--d:0ms"><span class="logo-mark">👥</span></div>
+
+        <h2 class="heading pop" style="--d:60ms">Who's Playing?</h2>
+        <p class="hint pop" style="--d:100ms">Enter the names of all 4 players before starting.</p>
+
+        <form class="glass card names-card pop" id="name-form" style="--d:160ms">
+          <div class="name-fields">
+            <label class="name-field">
+              <span>Player 1</span>
+              <input id="name-1" type="text" maxlength="18" autocomplete="off" placeholder="Enter name" required />
+            </label>
+            <label class="name-field">
+              <span>Player 2</span>
+              <input id="name-2" type="text" maxlength="18" autocomplete="off" placeholder="Enter name" required />
+            </label>
+            <label class="name-field">
+              <span>Player 3</span>
+              <input id="name-3" type="text" maxlength="18" autocomplete="off" placeholder="Enter name" required />
+            </label>
+            <label class="name-field">
+              <span>Player 4</span>
+              <input id="name-4" type="text" maxlength="18" autocomplete="off" placeholder="Enter name" required />
+            </label>
+          </div>
+
+          <p class="form-error" id="name-error" aria-live="polite"></p>
+
+          <button class="btn btn-primary" type="submit">
+            <span class="btn-label">Start Game</span>
+            <span class="btn-glow" aria-hidden="true"></span>
+          </button>
+        </form>
+      </div>
+    </section>
+
     <!-- ───────────────────────── PASS ───────────────────────── -->
     <section class="screen" id="screen-pass" data-screen="pass">
       <div class="stack">
@@ -62,7 +101,7 @@
           <span class="ring ring-1" aria-hidden="true"></span>
           <span class="ring ring-2" aria-hidden="true"></span>
           <div class="glass passer-badge">
-            <span class="passer-label">Player</span>
+            <span class="passer-label" id="pass-name">Player 1</span>
             <span class="passer-num" id="pass-number">1</span>
           </div>
         </div>
@@ -72,7 +111,7 @@
         <div class="dots pop" id="dots-pass" style="--d:180ms" aria-hidden="true"></div>
 
         <button class="btn btn-primary pop" style="--d:220ms" id="btn-imready" type="button">
-          <span class="btn-label">I'm Player <span id="ready-number">1</span></span>
+          <span class="btn-label">I'm <span id="ready-name">Player 1</span></span>
           <span class="btn-glow" aria-hidden="true"></span>
         </button>
       </div>
@@ -81,7 +120,7 @@
     <!-- ───────────────────────── CARD ───────────────────────── -->
     <section class="screen" id="screen-card" data-screen="card">
       <div class="stack">
-        <p class="eyebrow pop" style="--d:0ms">Player <span id="card-number">1</span>'s card</p>
+        <p class="eyebrow pop" style="--d:0ms"><span id="card-name">Player 1</span>'s card</p>
 
         <div class="flip-wrap pop" style="--d:60ms">
           <button class="flip" id="flip-card" type="button" aria-label="Tap to reveal your card">

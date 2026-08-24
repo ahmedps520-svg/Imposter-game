@@ -8,28 +8,12 @@ const PLAYER_COUNT = 4;
 /* A deliberately mainstream list — everyone at the table should
    recognise the title, otherwise the imposter wins by default. */
 const GAMES = [
-  "Minecraft", "Fortnite", "Roblox", "Among Us", "Mario Kart",
-  "Super Mario Bros.", "The Legend of Zelda", "Pokémon", "Tetris", "Pac-Man",
-  "Sonic the Hedgehog", "Donkey Kong", "Space Invaders", "Angry Birds", "Candy Crush",
-  "Subway Surfers", "Temple Run", "Fruit Ninja", "Flappy Bird", "Cut the Rope",
-  "Clash of Clans", "Clash Royale", "Brawl Stars", "Plants vs. Zombies", "Fall Guys",
-  "Rocket League", "The Sims", "Animal Crossing", "Stardew Valley", "Terraria",
-  "Grand Theft Auto", "Call of Duty", "Battlefield", "Halo", "Overwatch",
-  "Valorant", "Counter-Strike", "Apex Legends", "PUBG", "Rainbow Six Siege",
-  "League of Legends", "World of Warcraft", "Diablo", "StarCraft", "Age of Empires",
-  "Street Fighter", "Mortal Kombat", "Super Smash Bros.", "Tekken", "Just Dance",
-  "Guitar Hero", "Wii Sports", "FIFA", "NBA 2K", "Madden NFL",
-  "Need for Speed", "Gran Turismo", "Forza Horizon", "Crash Bandicoot", "Spyro the Dragon",
-  "Assassin's Creed", "Far Cry", "Resident Evil", "Silent Hill", "Tomb Raider",
-  "Uncharted", "God of War", "The Last of Us", "Red Dead Redemption", "Skyrim",
-  "Fallout", "Elden Ring", "Dark Souls", "Portal", "Half-Life",
-  "Doom", "Bioshock", "Minesweeper", "Solitaire", "Snake",
-  "Frogger", "Centipede", "Asteroids", "Duck Hunt", "Metroid",
-  "Kirby", "Splatoon", "Mario Party", "Luigi's Mansion", "Star Fox",
-  "Mega Man", "Castlevania", "Final Fantasy", "Kingdom Hearts", "Genshin Impact",
-  "Five Nights at Freddy's", "Geometry Dash", "Hill Climb Racing", "Crossy Road", "Piano Tiles",
-  "2048", "Bejeweled", "Hollow Knight", "Cuphead", "Undertale",
-  "Sea of Thieves", "It Takes Two", "Human Fall Flat", "Goat Simulator", "Slither.io"
+  "Minecraft",
+  "Roblox",
+  "Fortnite",
+  "Among Us",
+  "Mario Kart",
+  "Super Mario Bros."
 ];
 
 /* ── DOM ───────────────────────────────────────────────── */
@@ -39,7 +23,10 @@ const $ = (id) => document.getElementById(id);
 const el = {
   passNumber:   $("pass-number"),
   readyNumber:  $("ready-number"),
+  readyName:    $("ready-name"),
+  passName:     $("pass-name"),
   cardNumber:   $("card-number"),
+  cardName:     $("card-name"),
   cardKicker:   $("card-kicker"),
   cardWord:     $("card-word"),
   cardNote:     $("card-note"),
@@ -54,7 +41,10 @@ const el = {
   resultGame:   $("result-game"),
   confetti:     $("confetti"),
   soundBtn:     $("btn-sound"),
-  soundIcon:    $("sound-icon")
+  soundIcon:    $("sound-icon"),
+  nameForm:     $("name-form"),
+  nameInputs:   [$("name-1"), $("name-2"), $("name-3"), $("name-4")],
+  nameError:    $("name-error")
 };
 
 /* ── State ─────────────────────────────────────────────── */
@@ -63,6 +53,7 @@ const state = {
   game: null,
   imposter: null,
   current: 1,        // player whose turn it is (1-based)
+  players: ["Player 1", "Player 2", "Player 3", "Player 4"],
   revealed: false,   // has the current player flipped their card?
   lastGame: null,    // avoid drawing the same title twice in a row
   busy: false        // lock inputs during a screen transition
@@ -134,6 +125,33 @@ function renderDots() {
   });
 }
 
+/* ── Player names ───────────────────────────────────────── */
+
+function showNameEntry() {
+  el.nameError.textContent = "";
+  el.nameInputs.forEach((input, index) => {
+    input.value = state.players[index].startsWith("Player ")
+      ? ""
+      : state.players[index];
+  });
+  goTo("names");
+}
+
+function startNamedRound(event) {
+  event.preventDefault();
+  const names = el.nameInputs.map((input) => input.value.trim());
+
+  if (names.some((name) => !name)) {
+    el.nameError.textContent = "Please enter all 4 player names.";
+    return;
+  }
+
+  state.players = names;
+  sound.unlock();
+  sound.tap();
+  newRound();
+}
+
 /* ── Game flow ─────────────────────────────────────────── */
 
 function newRound() {
@@ -152,8 +170,11 @@ function newRound() {
 }
 
 function showPass() {
+  const playerName = state.players[state.current - 1];
   el.passNumber.textContent = state.current;
+  el.passName.textContent = playerName;
   el.readyNumber.textContent = state.current;
+  el.readyName.textContent = playerName;
   renderDots();
   goTo("pass");
 }
@@ -161,6 +182,7 @@ function showPass() {
 function showCard() {
   state.revealed = false;
   el.cardNumber.textContent = state.current;
+  el.cardName.textContent = state.players[state.current - 1];
 
   // reset the card face-down before the screen fades in
   el.flipInner.classList.remove("is-flipped");
@@ -263,7 +285,8 @@ function tapped(handler) {
   };
 }
 
-$("btn-start").addEventListener("click", tapped(() => { sound.tap(); newRound(); }));
+$("btn-start").addEventListener("click", tapped(showNameEntry));
+el.nameForm.addEventListener("submit", tapped(startNamedRound));
 $("btn-imready").addEventListener("click", tapped(() => { sound.tap(); showCard(); }));
 $("btn-next").addEventListener("click", tapped(() => { sound.tap(); nextPlayer(); }));
 $("btn-finish").addEventListener("click", tapped(() => showResult()));

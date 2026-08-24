@@ -670,3 +670,79 @@ body {
   .pop { opacity: 1; }
   .flip-inner.is-flipped { transform: rotateY(180deg); }
 }
+
+
+/* ── Player name setup ─────────────────────────────────── */
+.names-card {
+  padding: 22px;
+}
+
+.name-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.name-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+  color: var(--ink-soft);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.name-field input {
+  width: 100%;
+  min-height: 52px;
+  padding: 0 15px;
+  border: 1px solid var(--glass-line);
+  border-radius: 16px;
+  outline: none;
+  background: rgba(255,255,255,0.08);
+  color: var(--ink);
+  font: inherit;
+  font-size: 16px;
+  letter-spacing: normal;
+  text-transform: none;
+  -webkit-appearance: none;
+  transition: border-color 180ms ease, background 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+
+.name-field input::placeholder {
+  color: var(--ink-faint);
+}
+
+.name-field input:focus {
+  border-color: rgba(124,92,255,0.8);
+  background: rgba(255,255,255,0.13);
+  box-shadow: 0 0 0 4px rgba(124,92,255,0.12);
+  transform: translateY(-1px);
+}
+
+.form-error {
+  min-height: 20px;
+  color: #ff8ca1;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.names-card .btn {
+  width: 100%;
+}
+
+@media (max-width: 480px) {
+  .name-fields {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .names-card {
+    padding: 18px;
+  }
+}
