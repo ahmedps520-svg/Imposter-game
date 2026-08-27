@@ -8,14 +8,17 @@ has to bluff their way through it.
 
 ## How to play
 
-1. Tap **Start Game** and hand the iPad to Player 1.
-2. Each player taps their card to reveal it privately, then taps **Hide & Pass On**.
+1. Tap **Start Game** and enter the four players' names (or leave a field blank
+   to just use "Player 1", "Player 2", etc).
+2. Hand the iPad to the first player. Each player taps their card to reveal it
+   privately, then taps **Hide & Pass On**.
 3. Once all four have seen their card, put the iPad down and play:
    going clockwise, everyone says **one word** describing the game.
    Too obvious and the imposter figures it out; too vague and you look guilty.
 4. Discuss, then point at whoever you think the imposter is on the count of three.
 5. Tap **Finished Game — Reveal** to see who the imposter was and what the secret game was.
-6. Tap **New Game** to deal a fresh round.
+6. Tap **New Game** to deal a fresh round with the same players, or
+   **Change Players** to edit names first.
 
 ## Running it
 
@@ -37,9 +40,12 @@ Everything runs offline — no internet, no accounts, no data leaves the device.
 
 ## Notes
 
-- The game pool is ~110 mainstream titles in `GAMES` at the top of `script.js`.
-  Add or remove titles there to tune it for your family — keep them ones everyone
-  actually recognises, or the imposter wins by default.
+- The game pool is the `GAMES` array at the top of `script.js` — kept short on
+  purpose to titles young kids instantly recognise (Minecraft, Fortnite, Roblox,
+  Among Us, Mario Kart, Pokémon). Add or remove titles there to tune it for
+  your family; an unfamiliar title just hands the round to the imposter.
+- Names are capped at 12 characters and only live in memory for the session —
+  nothing is saved to disk or sent anywhere.
 - The same game never comes up twice in a row.
 - The 🔊 button in the corner mutes the sound effects; the choice is remembered.
 - Respects `prefers-reduced-motion` — animations and confetti are dropped if the
@@ -49,6 +55,6 @@ Everything runs offline — no internet, no accounts, no data leaves the device.
 
 | File | What's in it |
 | --- | --- |
-| `index.html` | The five screens: home, pass, card, discuss, reveal |
+| `index.html` | The six screens: home, name entry, pass, card, discuss, reveal |
 | `styles.css` | Glassmorphism styling, aurora background, all animations |
 | `script.js` | Game state, the video game list, sound effects, confetti |

@@ -5,31 +5,10 @@
 
 const PLAYER_COUNT = 4;
 
-/* A deliberately mainstream list — everyone at the table should
-   recognise the title, otherwise the imposter wins by default. */
+/* Kept short on purpose — every title here has to be one a kid would
+   instantly recognise, or the imposter wins by default. */
 const GAMES = [
-  "Minecraft", "Fortnite", "Roblox", "Among Us", "Mario Kart",
-  "Super Mario Bros.", "The Legend of Zelda", "Pokémon", "Tetris", "Pac-Man",
-  "Sonic the Hedgehog", "Donkey Kong", "Space Invaders", "Angry Birds", "Candy Crush",
-  "Subway Surfers", "Temple Run", "Fruit Ninja", "Flappy Bird", "Cut the Rope",
-  "Clash of Clans", "Clash Royale", "Brawl Stars", "Plants vs. Zombies", "Fall Guys",
-  "Rocket League", "The Sims", "Animal Crossing", "Stardew Valley", "Terraria",
-  "Grand Theft Auto", "Call of Duty", "Battlefield", "Halo", "Overwatch",
-  "Valorant", "Counter-Strike", "Apex Legends", "PUBG", "Rainbow Six Siege",
-  "League of Legends", "World of Warcraft", "Diablo", "StarCraft", "Age of Empires",
-  "Street Fighter", "Mortal Kombat", "Super Smash Bros.", "Tekken", "Just Dance",
-  "Guitar Hero", "Wii Sports", "FIFA", "NBA 2K", "Madden NFL",
-  "Need for Speed", "Gran Turismo", "Forza Horizon", "Crash Bandicoot", "Spyro the Dragon",
-  "Assassin's Creed", "Far Cry", "Resident Evil", "Silent Hill", "Tomb Raider",
-  "Uncharted", "God of War", "The Last of Us", "Red Dead Redemption", "Skyrim",
-  "Fallout", "Elden Ring", "Dark Souls", "Portal", "Half-Life",
-  "Doom", "Bioshock", "Minesweeper", "Solitaire", "Snake",
-  "Frogger", "Centipede", "Asteroids", "Duck Hunt", "Metroid",
-  "Kirby", "Splatoon", "Mario Party", "Luigi's Mansion", "Star Fox",
-  "Mega Man", "Castlevania", "Final Fantasy", "Kingdom Hearts", "Genshin Impact",
-  "Five Nights at Freddy's", "Geometry Dash", "Hill Climb Racing", "Crossy Road", "Piano Tiles",
-  "2048", "Bejeweled", "Hollow Knight", "Cuphead", "Undertale",
-  "Sea of Thieves", "It Takes Two", "Human Fall Flat", "Goat Simulator", "Slither.io"
+  "Minecraft", "Fortnite", "Roblox", "Among Us", "Mario Kart", "Pokémon"
 ];
 
 /* ── DOM ───────────────────────────────────────────────── */
@@ -37,6 +16,8 @@ const GAMES = [
 const $ = (id) => document.getElementById(id);
 
 const el = {
+  nameForm:     $("name-form"),
+  nameInputs:   [1, 2, 3, 4].map((n) => $("name-" + n)),
   passNumber:   $("pass-number"),
   readyNumber:  $("ready-number"),
   cardNumber:   $("card-number"),
@@ -60,6 +41,7 @@ const el = {
 /* ── State ─────────────────────────────────────────────── */
 
 const state = {
+  names: ["Player 1", "Player 2", "Player 3", "Player 4"],
   game: null,
   imposter: null,
   current: 1,        // player whose turn it is (1-based)
@@ -67,6 +49,10 @@ const state = {
   lastGame: null,    // avoid drawing the same title twice in a row
   busy: false        // lock inputs during a screen transition
 };
+
+function nameOf(playerNumber) {
+  return state.names[playerNumber - 1] || ("Player " + playerNumber);
+}
 
 /* ── Sound (WebAudio, no assets) ───────────────────────── */
 
@@ -134,6 +120,19 @@ function renderDots() {
   });
 }
 
+/* ── Player setup ──────────────────────────────────────── */
+
+function prefillNames() {
+  el.nameInputs.forEach((input, i) => {
+    const stored = state.names[i];
+    input.value = stored && stored !== "Player " + (i + 1) ? stored : "";
+  });
+}
+
+function collectNames() {
+  state.names = el.nameInputs.map((input, i) => input.value.trim() || "Player " + (i + 1));
+}
+
 /* ── Game flow ─────────────────────────────────────────── */
 
 function newRound() {
@@ -152,15 +151,15 @@ function newRound() {
 }
 
 function showPass() {
-  el.passNumber.textContent = state.current;
-  el.readyNumber.textContent = state.current;
+  el.passNumber.textContent = nameOf(state.current);
+  el.readyNumber.textContent = nameOf(state.current);
   renderDots();
   goTo("pass");
 }
 
 function showCard() {
   state.revealed = false;
-  el.cardNumber.textContent = state.current;
+  el.cardNumber.textContent = nameOf(state.current);
 
   // reset the card face-down before the screen fades in
   el.flipInner.classList.remove("is-flipped");
@@ -216,7 +215,7 @@ function nextPlayer() {
 }
 
 function showResult() {
-  el.resultNum.textContent = state.imposter;
+  el.resultNum.textContent = nameOf(state.imposter);
   el.resultGame.textContent = state.game;
   goTo("result");
   sound.fanfare();
@@ -263,17 +262,33 @@ function tapped(handler) {
   };
 }
 
-$("btn-start").addEventListener("click", tapped(() => { sound.tap(); newRound(); }));
+$("btn-start").addEventListener("click", tapped(() => { sound.tap(); prefillNames(); goTo("setup"); }));
+$("btn-names-back").addEventListener("click", tapped(() => { sound.tap(); goTo("home"); }));
+$("btn-names-continue").addEventListener("click", tapped(() => { sound.tap(); collectNames(); newRound(); }));
 $("btn-imready").addEventListener("click", tapped(() => { sound.tap(); showCard(); }));
 $("btn-next").addEventListener("click", tapped(() => { sound.tap(); nextPlayer(); }));
 $("btn-finish").addEventListener("click", tapped(() => showResult()));
 $("btn-skip").addEventListener("click", tapped(() => { sound.tap(); newRound(); }));
 $("btn-again").addEventListener("click", tapped(() => { sound.tap(); newRound(); }));
+$("btn-edit-players").addEventListener("click", tapped(() => { sound.tap(); prefillNames(); goTo("setup"); }));
 
 el.flipCard.addEventListener("click", (event) => {
   event.preventDefault();
   sound.unlock();
   revealCard();
+});
+
+/* Enter/Return on a name field moves to the next one; on the last
+   field it submits, same as tapping "Let's Play". */
+el.nameForm.addEventListener("submit", (event) => event.preventDefault());
+el.nameInputs.forEach((input, i) => {
+  input.addEventListener("keydown", (event) => {
+    if (event.key !== "Enter") return;
+    event.preventDefault();
+    const next = el.nameInputs[i + 1];
+    if (next) next.focus();
+    else $("btn-names-continue").click();
+  });
 });
 
 el.soundBtn.addEventListener("click", () => {

@@ -53,6 +53,44 @@
       </div>
     </section>
 
+    <!-- ───────────────────────── SETUP ───────────────────────── -->
+    <section class="screen" id="screen-setup" data-screen="setup">
+      <div class="stack">
+        <p class="eyebrow pop" style="--d:0ms">Who's playing?</p>
+        <h2 class="heading pop" style="--d:40ms">Enter 4 names</h2>
+
+        <form class="glass card name-form pop" style="--d:120ms" id="name-form">
+          <label class="name-row">
+            <span class="rule-num">1</span>
+            <input class="name-input" id="name-1" type="text" maxlength="12" placeholder="Player 1"
+                   autocomplete="off" autocapitalize="words" spellcheck="false" enterkeyhint="next" />
+          </label>
+          <label class="name-row">
+            <span class="rule-num">2</span>
+            <input class="name-input" id="name-2" type="text" maxlength="12" placeholder="Player 2"
+                   autocomplete="off" autocapitalize="words" spellcheck="false" enterkeyhint="next" />
+          </label>
+          <label class="name-row">
+            <span class="rule-num">3</span>
+            <input class="name-input" id="name-3" type="text" maxlength="12" placeholder="Player 3"
+                   autocomplete="off" autocapitalize="words" spellcheck="false" enterkeyhint="next" />
+          </label>
+          <label class="name-row">
+            <span class="rule-num">4</span>
+            <input class="name-input" id="name-4" type="text" maxlength="12" placeholder="Player 4"
+                   autocomplete="off" autocapitalize="words" spellcheck="false" enterkeyhint="done" />
+          </label>
+        </form>
+
+        <button class="btn btn-primary pop" style="--d:200ms" id="btn-names-continue" type="button">
+          <span class="btn-label">Let's Play</span>
+          <span class="btn-glow" aria-hidden="true"></span>
+        </button>
+
+        <button class="btn btn-ghost pop" style="--d:240ms" id="btn-names-back" type="button">Back</button>
+      </div>
+    </section>
+
     <!-- ───────────────────────── PASS ───────────────────────── -->
     <section class="screen" id="screen-pass" data-screen="pass">
       <div class="stack">
@@ -63,7 +101,7 @@
           <span class="ring ring-2" aria-hidden="true"></span>
           <div class="glass passer-badge">
             <span class="passer-label">Player</span>
-            <span class="passer-num" id="pass-number">1</span>
+            <span class="passer-num" id="pass-number">Player 1</span>
           </div>
         </div>
 
@@ -72,7 +110,7 @@
         <div class="dots pop" id="dots-pass" style="--d:180ms" aria-hidden="true"></div>
 
         <button class="btn btn-primary pop" style="--d:220ms" id="btn-imready" type="button">
-          <span class="btn-label">I'm Player <span id="ready-number">1</span></span>
+          <span class="btn-label">I'm <span id="ready-number">Player 1</span></span>
           <span class="btn-glow" aria-hidden="true"></span>
         </button>
       </div>
@@ -81,7 +119,7 @@
     <!-- ───────────────────────── CARD ───────────────────────── -->
     <section class="screen" id="screen-card" data-screen="card">
       <div class="stack">
-        <p class="eyebrow pop" style="--d:0ms">Player <span id="card-number">1</span>'s card</p>
+        <p class="eyebrow pop" style="--d:0ms"><span id="card-number">Player 1</span>'s card</p>
 
         <div class="flip-wrap pop" style="--d:60ms">
           <button class="flip" id="flip-card" type="button" aria-label="Tap to reveal your card">
@@ -147,8 +185,7 @@
         <p class="eyebrow pop" style="--d:0ms">The imposter was</p>
 
         <div class="glass card result-card pop" style="--d:80ms">
-          <span class="result-num" id="result-imposter">1</span>
-          <span class="result-label">Player</span>
+          <span class="result-num" id="result-imposter">Player 1</span>
         </div>
 
         <div class="glass card secret-card pop" style="--d:180ms">
@@ -160,6 +197,8 @@
           <span class="btn-label">New Game</span>
           <span class="btn-glow" aria-hidden="true"></span>
         </button>
+
+        <button class="btn btn-ghost pop" style="--d:320ms" id="btn-edit-players" type="button">Change Players</button>
       </div>
     </section>
 
