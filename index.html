@@ -62,24 +62,25 @@
         <form class="glass card name-form pop" style="--d:120ms" id="name-form">
           <label class="name-row">
             <span class="rule-num">1</span>
-            <input class="name-input" id="name-1" type="text" maxlength="12" placeholder="Player 1"
+            <input class="name-input" id="name-1" type="text" maxlength="16" placeholder="Enter name" required
                    autocomplete="off" autocapitalize="words" spellcheck="false" enterkeyhint="next" />
           </label>
           <label class="name-row">
             <span class="rule-num">2</span>
-            <input class="name-input" id="name-2" type="text" maxlength="12" placeholder="Player 2"
+            <input class="name-input" id="name-2" type="text" maxlength="16" placeholder="Enter name" required
                    autocomplete="off" autocapitalize="words" spellcheck="false" enterkeyhint="next" />
           </label>
           <label class="name-row">
             <span class="rule-num">3</span>
-            <input class="name-input" id="name-3" type="text" maxlength="12" placeholder="Player 3"
+            <input class="name-input" id="name-3" type="text" maxlength="16" placeholder="Enter name" required
                    autocomplete="off" autocapitalize="words" spellcheck="false" enterkeyhint="next" />
           </label>
           <label class="name-row">
             <span class="rule-num">4</span>
-            <input class="name-input" id="name-4" type="text" maxlength="12" placeholder="Player 4"
+            <input class="name-input" id="name-4" type="text" maxlength="16" placeholder="Enter name" required
                    autocomplete="off" autocapitalize="words" spellcheck="false" enterkeyhint="done" />
           </label>
+          <p class="name-error" id="name-error" aria-live="polite"></p>
         </form>
 
         <button class="btn btn-primary pop" style="--d:200ms" id="btn-names-continue" type="button">

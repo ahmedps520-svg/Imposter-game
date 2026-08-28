@@ -8,8 +8,8 @@ has to bluff their way through it.
 
 ## How to play
 
-1. Tap **Start Game** and enter the four players' names (or leave a field blank
-   to just use "Player 1", "Player 2", etc).
+1. Tap **Start Game** and enter all four players' names — it won't let you
+   continue until every field is filled in.
 2. Hand the iPad to the first player. Each player taps their card to reveal it
    privately, then taps **Hide & Pass On**.
 3. Once all four have seen their card, put the iPad down and play:
@@ -44,9 +44,10 @@ Everything runs offline — no internet, no accounts, no data leaves the device.
   purpose to titles young kids instantly recognise (Minecraft, Fortnite, Roblox,
   Among Us, Mario Kart, Pokémon). Add or remove titles there to tune it for
   your family; an unfamiliar title just hands the round to the imposter.
-- Names are capped at 12 characters and only live in memory for the session —
+- Names are capped at 16 characters and only live in memory for the session —
   nothing is saved to disk or sent anywhere.
-- The same game never comes up twice in a row.
+- The same game never comes up twice in a row, and neither is the same
+  player picked as imposter two rounds in a row.
 - The 🔊 button in the corner mutes the sound effects; the choice is remembered.
 - Respects `prefers-reduced-motion` — animations and confetti are dropped if the
   device is set to reduce motion.

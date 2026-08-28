@@ -18,6 +18,7 @@ const $ = (id) => document.getElementById(id);
 const el = {
   nameForm:     $("name-form"),
   nameInputs:   [1, 2, 3, 4].map((n) => $("name-" + n)),
+  nameError:    $("name-error"),
   passNumber:   $("pass-number"),
   readyNumber:  $("ready-number"),
   cardNumber:   $("card-number"),
@@ -47,6 +48,7 @@ const state = {
   current: 1,        // player whose turn it is (1-based)
   revealed: false,   // has the current player flipped their card?
   lastGame: null,    // avoid drawing the same title twice in a row
+  lastImposter: null, // avoid making the same player the imposter twice in a row
   busy: false        // lock inputs during a screen transition
 };
 
@@ -123,14 +125,29 @@ function renderDots() {
 /* ── Player setup ──────────────────────────────────────── */
 
 function prefillNames() {
+  el.nameError.textContent = "";
   el.nameInputs.forEach((input, i) => {
     const stored = state.names[i];
     input.value = stored && stored !== "Player " + (i + 1) ? stored : "";
+    input.classList.remove("is-invalid");
   });
 }
 
-function collectNames() {
-  state.names = el.nameInputs.map((input, i) => input.value.trim() || "Player " + (i + 1));
+function validateAndCollectNames() {
+  const values = el.nameInputs.map((input) => input.value.trim());
+  const firstEmpty = values.findIndex((v) => !v);
+
+  el.nameInputs.forEach((input, i) => input.classList.toggle("is-invalid", !values[i]));
+
+  if (firstEmpty !== -1) {
+    el.nameError.textContent = "Please enter all 4 player names.";
+    el.nameInputs[firstEmpty].focus();
+    return false;
+  }
+
+  el.nameError.textContent = "";
+  state.names = values;
+  return true;
 }
 
 /* ── Game flow ─────────────────────────────────────────── */
@@ -143,7 +160,14 @@ function newRound() {
 
   state.game = pick;
   state.lastGame = pick;
-  state.imposter = 1 + Math.floor(Math.random() * PLAYER_COUNT);
+
+  let nextImposter;
+  do {
+    nextImposter = 1 + Math.floor(Math.random() * PLAYER_COUNT);
+  } while (PLAYER_COUNT > 1 && nextImposter === state.lastImposter);
+
+  state.imposter = nextImposter;
+  state.lastImposter = nextImposter;
   state.current = 1;
   state.revealed = false;
 
@@ -264,7 +288,11 @@ function tapped(handler) {
 
 $("btn-start").addEventListener("click", tapped(() => { sound.tap(); prefillNames(); goTo("setup"); }));
 $("btn-names-back").addEventListener("click", tapped(() => { sound.tap(); goTo("home"); }));
-$("btn-names-continue").addEventListener("click", tapped(() => { sound.tap(); collectNames(); newRound(); }));
+$("btn-names-continue").addEventListener("click", tapped(() => {
+  if (!validateAndCollectNames()) return;
+  sound.tap();
+  newRound();
+}));
 $("btn-imready").addEventListener("click", tapped(() => { sound.tap(); showCard(); }));
 $("btn-next").addEventListener("click", tapped(() => { sound.tap(); nextPlayer(); }));
 $("btn-finish").addEventListener("click", tapped(() => showResult()));
@@ -282,6 +310,10 @@ el.flipCard.addEventListener("click", (event) => {
    field it submits, same as tapping "Let's Play". */
 el.nameForm.addEventListener("submit", (event) => event.preventDefault());
 el.nameInputs.forEach((input, i) => {
+  input.addEventListener("input", () => {
+    input.classList.remove("is-invalid");
+    el.nameError.textContent = "";
+  });
   input.addEventListener("keydown", (event) => {
     if (event.key !== "Enter") return;
     event.preventDefault();

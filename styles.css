@@ -320,6 +320,20 @@ body {
   box-shadow: 0 0 0 3px rgba(124, 92, 255, 0.28);
 }
 
+.name-input.is-invalid {
+  border-color: rgba(255, 130, 150, 0.7);
+  box-shadow: 0 0 0 3px rgba(255, 77, 109, 0.22);
+}
+
+.name-error {
+  min-height: 18px;
+  padding-top: 2px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #ff9db0;
+  text-align: left;
+}
+
 /* ── Buttons ────────────────────────────────────────────── */
 
 .btn {
@@ -390,6 +404,11 @@ body {
   height: clamp(150px, 42vw, 190px);
   border-radius: 44px;
   display: grid;
+  /* minmax(0, 1fr) overrides the grid track's automatic min-content
+     minimum — without it an unbroken name can force the column (and the
+     badge itself) wider than the fixed width above, regardless of any
+     width/max-width set on the child. */
+  grid-template-columns: minmax(0, 1fr);
   place-items: center;
   gap: 6px;
   padding: 12px 26px;
@@ -407,11 +426,18 @@ body {
 
 .passer-num {
   display: block;
+  /* .passer-badge uses place-items:center, which disables the default
+     grid stretch — without justify-self:stretch this item shrinks to its
+     own content first, making width/max-width percentages circular and
+     letting long names overflow the badge. */
+  justify-self: stretch;
+  width: 100%;
   max-width: 100%;
-  font-size: clamp(28px, 9vw, 50px);
+  font-size: clamp(24px, 8vw, 46px);
   font-weight: 800;
   line-height: 1.15;
-  overflow-wrap: break-word;
+  text-align: center;
+  overflow-wrap: anywhere;
   background: linear-gradient(140deg, #fff, #b9a7ff);
   -webkit-background-clip: text;
   background-clip: text;
@@ -616,12 +642,19 @@ body {
 
 .result-num {
   display: block;
+  /* .result-card is a column flexbox with align-items:center, which
+     disables cross-axis stretch — without align-self:stretch this item
+     shrinks to its own content first, making width/max-width percentages
+     circular and letting long names overflow the card. */
+  align-self: stretch;
+  width: 100%;
   max-width: 100%;
   padding-inline: 8px;
-  font-size: clamp(32px, 11vw, 56px);
+  font-size: clamp(28px, 10vw, 52px);
   font-weight: 800;
   line-height: 1.15;
-  overflow-wrap: break-word;
+  text-align: center;
+  overflow-wrap: anywhere;
   background: linear-gradient(140deg, #fff, #ffc0cb);
   -webkit-background-clip: text;
   background-clip: text;
